@@ -23,6 +23,15 @@ JvmAttachEnabler is a Windows DLL designed to be injected into Java processes. I
 2. The DLL will attempt to modify the DisableAttachMechanism flag
 3. Check the console output for results
 
+## How does this work?
+JvmAttachEnabler works by modifying the DisableAttachMechanism flag in the JVM.
+
+The flag is defined in the [OpenJDK source code](https://github.com/openjdk/jdk17/blob/4afbcaf55383ec2f5da53282a1547bac3d099e9d/src/hotspot/share/runtime/thread.cpp#L2944)
+
+This static boolean controls whether the JVM allows attaching debuggers and tools.
+The DLL finds the memory location of this flag in the loaded jvm.dll and sets it to false, enabling attachments.
+By changing this flag at runtime, the DLL bypasses restrictions on attaching to the JVM process.
+
 ## Offsets
 To find JVM offsets:
 1. Use a disassembler like IDA Pro to analyze jvm.dll
